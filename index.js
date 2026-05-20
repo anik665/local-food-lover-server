@@ -37,6 +37,15 @@ async function run() {
       const result = await products.find().toArray();
       res.send(result);
     });
+    app.get("/reviews", async (req, res) => {
+      const search = req.query.search || "";
+      let query = {};
+      if (search) {
+        query = { foodName: { $regex: search, $options: "i" } };
+      }
+      const result = await products.find(query).toArray();
+      res.send(result);
+    });
 
     app.delete("/products/:id", async (req, res) => {
       const id = req.params.id;
